@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import sys
+import requests
+
 
 class Episode(object):
     def __init__(self, title, pub_date, url):
@@ -19,6 +22,16 @@ class Episode(object):
         if enclosure is not None:
             url = enclosure.attrib['url']
         return cls(title, pub_date, url)
+
+    def download(self, path):
+        print("download {} to {}".format(self.url, path))
+        r = requests.get(self.url, stream=True)
+        with open(path, "wb") as f:
+            for chunk in r.iter_content(chunk_size=100 * 1024):  # 100k per chunk
+                print('.', end='')
+                sys.stdout.flush()
+                f.write(chunk)
+            print("done.")
 
 
 class Podcast(object):
@@ -45,3 +58,11 @@ class Podcast(object):
             p.episodes.append(Episode.from_rss_xml(item))
 
         return p
+
+    def sync(self, library):
+        library.podcast_dir(self)
+
+        for ep in self.episodes:
+            if not library.contains(self, ep):
+                path = library.file_path(self, ep)
+                ep.download(path)
