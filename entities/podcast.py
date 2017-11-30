@@ -59,10 +59,14 @@ class Podcast(object):
 
         return p
 
-    def sync(self, library):
+    def sync(self, library, num_recent=None):
         library.podcast_dir(self)
 
-        for ep in self.episodes:
+        for i, ep in enumerate(self.episodes):
+
+            if num_recent is not None and i >= num_recent:
+                break
+
             if not library.contains(self, ep):
                 path = library.file_path(self, ep)
                 ep.download(path)

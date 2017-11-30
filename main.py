@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import yaml
 import requests
+import argparse
 import xml.etree.ElementTree as ET
 
 from entities.podcast import Podcast
@@ -11,7 +12,15 @@ library_file = './library.yaml'
 library_path = './library'
 
 
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--num-recent', type=int, help="number of recent podcasts to get")
+    return parser.parse_args()
+
+
 def main():
+    args = get_args()
+
     library = Library(library_path)
 
     index = yaml.load(open(library_file))
@@ -33,7 +42,7 @@ def main():
 
         print()
 
-        podcast.sync(library)
+        podcast.sync(library, args.num_recent)
 
 
 if __name__ == '__main__':
