@@ -2,6 +2,11 @@
 
 import os
 import os.path
+import requests.utils
+
+
+def escape(s):
+    return requests.utils.quote(s, safe=' ')
 
 
 class Library(object):
@@ -11,13 +16,13 @@ class Library(object):
             os.mkdir(self.path)
 
     def podcast_dir(self, p):
-        directory = self.path + '/' + p.title
+        directory = self.path + '/' + escape(p.title)
         if not os.path.exists(directory):
             os.mkdir(directory)
         return directory
 
     def file_path(self, p, ep):
-        return self.path + '/' + p.title + '/' + ep.title + '.mp3'
+        return self.path + '/' + escape(p.title) + '/' + escape(ep.title) + '.mp3'
 
     def contains(self, p, ep):
         return os.path.exists(self.file_path(p, ep))
