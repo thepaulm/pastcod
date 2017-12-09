@@ -6,7 +6,7 @@ import requests.utils
 
 
 def escape(s):
-    return requests.utils.quote(s, safe=' ')
+    return requests.utils.quote(s, safe=' #:')
 
 
 class Library(object):
