@@ -1,0 +1,8 @@
+Package: pastcodd
+Version: 1.1-1
+Section: base
+Priority: optional
+Architecture: all
+Depends: python3 (>= 3.4.2-2)
+Maintainer: Mikesell
+Description: Better Podcast

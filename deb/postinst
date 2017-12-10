@@ -1,0 +1,3 @@
+#!/bin/bash
+
+update-rc.d pastcodd defaults 20 20

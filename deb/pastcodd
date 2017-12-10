@@ -1,0 +1,21 @@
+#!/bin/sh
+. /lib/lsb/init-functions
+
+set -e
+
+case $1 in
+  start)
+	log_daemon_msg "Starting pastcodd"
+	/usr/bin/pastcodd.py
+	log_end_msg 0
+  ;;
+  stop)
+	log_daemon_msg "Stopping pastcodd"
+	log_end_msg 0
+  ;;
+  restart|force-reload)
+  ;;
+esac
+
+exit 0
+
