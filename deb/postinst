@@ -1,3 +1,4 @@
 #!/bin/bash
 
 update-rc.d pastcodd defaults 20 20
+invoke-rc.d pastcodd start

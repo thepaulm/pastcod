@@ -1,12 +1,15 @@
 PKG_NAME=pastcodd_1.1-1_all
 
-deb:
+deb: layout
+	dpkg-deb --build ${PKG_NAME}
+
+layout:
 	mkdir -p ${PKG_NAME}/usr/bin
 	cp ../pastcodd.py ${PKG_NAME}/usr/bin/
 	mkdir -p ${PKG_NAME}/DEBIAN
 	cp control ${PKG_NAME}/DEBIAN
+	cp conffiles ${PKG_NAME}/DEBIAN
 	cp postinst ${PKG_NAME}/DEBIAN
-	dpkg-deb --build ${PKG_NAME}
 	mkdir -p ${PKG_NAME}/etc/init.d
 	cp pastcodd ${PKG_NAME}/etc/init.d/
 

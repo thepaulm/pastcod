@@ -1,4 +1,14 @@
 #!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:             pastcodd
+# Required-Start:
+# Required-Stop:
+# Default-Start:
+# Default-Stop:
+# Short-Description:    pastcod better podcast
+### END INIT INFO
+
 . /lib/lsb/init-functions
 
 set -e
