@@ -65,7 +65,7 @@ def main():
     episode_count = ep_queue.qsize()
     print("Downloading {} episodes with {} threads.".format(episode_count, args.num_threads))
 
-    # For each podcast, launch a thread to download episodes (so we don't get throttled)
+    # Launch our thread pool and hand them the queue
     for i in range(0, args.num_threads):
         thread_list.append(Thread(target=downloader, args=(ep_queue, library)))
         thread_list[i].daemon = False
