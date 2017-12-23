@@ -4,6 +4,7 @@ import os
 import os.path
 import requests.utils
 
+
 def escape(s):
     return requests.utils.quote(s, safe=' #:')
 

@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 
-import sys
 import requests
-import threading
-
 from entities.shared import locked_print
-from threading import Thread
+
 
 class Episode(object):
     def __init__(self, title, pub_date, url):
@@ -29,12 +26,11 @@ class Episode(object):
 
     def download(self, library):
         # Careful- this guy is multithreaded ...
-        
         try:
             r = requests.get(self.url, stream=True)
         except Exception as e:
             locked_print("Error accessing URL: {}. Error: {}".format(self.url, e))
-        
+
         path = library.file_path(self)
         locked_print("Downloading {} to {}".format(self.url, path))
 
@@ -45,7 +41,8 @@ class Episode(object):
 
                 locked_print("Finished downloading", self.url)
         except Exception as e:
-            locked_print("Error writing podcast episode: {}. Error: {}".format(self.url, e)) 
+            locked_print("Error writing podcast episode: {}. Error: {}".format(self.url, e))
+
 
 class Podcast(object):
     def __init__(self, title, description):
@@ -74,27 +71,11 @@ class Podcast(object):
 
         return p
 
-    def sync(self, library, num_recent=None):
-        library.podcast_dir(self)
-
-        for i, ep in enumerate(self.episodes):
-
-            if num_recent is not None and i >= num_recent:
-                break
-
-            #if not library.contains(self, ep):
-                #path = library.file_path(self, ep)
-                #ep.download(path)
-    
     def queue_episodes(self, ep_queue, library, num_recent=None):
         library.podcast_dir(self)
 
-        for i, ep in enumerate(self.episodes):
-
-            if num_recent is not None and i >= num_recent:
-                break
+        for ep in self.episodes[:num_recent]:
 
             # Add only the episodes not already in the library to the queue
             if not library.contains(self, ep):
                 ep_queue.put(ep)
-
