@@ -21,8 +21,8 @@ class Library(object):
             os.mkdir(directory)
         return directory
 
-    def file_path(self, p, ep):
-        return self.path + '/' + escape(p.title) + '/' + escape(ep.title) + '.mp3'
+    def file_path(self, ep):
+        return self.path + '/' + escape(ep.podcast_title) + '/' + escape(ep.title) + '.mp3'
 
     def contains(self, p, ep):
-        return os.path.exists(self.file_path(p, ep))
+        return os.path.exists(self.file_path(ep))
