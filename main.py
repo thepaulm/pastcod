@@ -3,11 +3,9 @@ import yaml
 import requests
 import argparse
 import xml.etree.ElementTree as ET
-import threading
 
 from entities.podcast import Podcast
 from entities.library import Library
-from entities.shared import locked_print
 from threading import Thread
 from queue import Queue
 
@@ -18,8 +16,9 @@ library_path = './library'
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--num-recent', type=int, help="number of recent podcasts to get")
-    parser.add_argument('--num-threads', default=1, type=int, help="number of threads to use for asynchronous downloading")
+    parser.add_argument('--num-threads', default=8, type=int, help="number of threads to use for asynchronous downloading")
     return parser.parse_args()
+
 
 def downloader(ep_queue, library):
     # Multithreaded: download each episode in the queue to the library
@@ -28,6 +27,7 @@ def downloader(ep_queue, library):
 
         ep.download(library)
         ep_queue.task_done()
+
 
 def main():
     args = get_args()
@@ -56,7 +56,7 @@ def main():
                 print("{}: {}".format(i, ep.title))
                 print("Date: ", ep.pub_date)
                 print("Url: ", ep.url)
-                
+
             print()
 
             # Create a queue of all of the episodes for the podcast which need to be synced
@@ -65,7 +65,7 @@ def main():
     episode_count = ep_queue.qsize()
     print("Downloading {} episodes with {} threads.".format(episode_count, args.num_threads))
 
-    #For each podcast, launch a thread to download episodes (so we don't get throttled)
+    # Launch our thread pool and hand them the queue
     for i in range(0, args.num_threads):
         thread_list.append(Thread(target=downloader, args=(ep_queue, library)))
         thread_list[i].daemon = False
@@ -79,6 +79,7 @@ def main():
         thread_list[t].join()
 
     print("Finished downloading {} episodes.".format(episode_count))
+
 
 if __name__ == '__main__':
     main()
