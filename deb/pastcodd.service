@@ -1,0 +1,14 @@
+[Unit]
+Description=PastCod Better PodCast
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/pastcodd.py
+WorkingDirectory=/
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target

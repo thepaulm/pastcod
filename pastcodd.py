@@ -1,6 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 loglevel = logging.DEBUG
@@ -16,7 +17,9 @@ init_logging()
 
 
 def main():
-    logging.info("Did this go?")
+    while True:
+        logging.info("Did this go?")
+        time.sleep(1)
 
 
 if __name__ == '__main__':

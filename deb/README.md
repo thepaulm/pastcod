@@ -7,3 +7,16 @@ so it should already be installed on your system.
 
 Yes, this works from a docker image too: I used armhero/raspbian to simulate the
 device.
+
+# Installing
+Copy to device, then:
+
+```
+dpkg -i ./pastcodd_1.1-1_all.deb
+```
+
+# Uninstalling
+
+```
+dpkg -P pastcodd
+```
